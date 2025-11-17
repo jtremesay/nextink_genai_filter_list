@@ -23,4 +23,10 @@ jobs:
         run: uv sync --locked
 
       - name: Run tests
-        run: uv run pytest test_domains_in_filter.py
+        run: uv run pytest --junitxml=results.xml test_domains_in_filter.py
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: 'results.xml'
